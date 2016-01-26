@@ -1,0 +1,10 @@
+{
+    "elements": {
+        "jsp:forward": {
+            "attributes": {
+                "page": {}
+            }
+        }
+    },
+    "attributes": {}
+}

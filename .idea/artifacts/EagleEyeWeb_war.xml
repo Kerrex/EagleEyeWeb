@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="EagleEyeWeb:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="EagleEyeWeb-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="EagleEyeWeb:war exploded" />
+    </root>
+  </artifact>
+</component>
