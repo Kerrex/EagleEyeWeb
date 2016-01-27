@@ -100,9 +100,9 @@ public class DBConnector {
 
 
     public ResultSet getAllBoughtProducts() throws SQLException {
-        return st.executeQuery("SELECT idKlient, Nazwa_produktu, eagleeye.KlientProdukt.EAN, Sum(Ilosc) FROM eagleeye.KlientProdukt " +
+        return st.executeQuery("SELECT Nazwa_produktu, eagleeye.KlientProdukt.EAN, Sum(Ilosc) FROM eagleeye.KlientProdukt " +
                 "JOIN eagleeye.Produkt ON eagleeye.KlientProdukt.EAN = eagleeye.Produkt.EAN " +
-                "GROUP BY idKlient, Nazwa_produktu, eagleeye.KlientProdukt.EAN;");
+                "GROUP BY Nazwa_produktu, eagleeye.KlientProdukt.EAN;");
     }
     public long getBoughtProductsLength(Date dateFrom, Date dateTo, long customerId) throws SQLException {
 

@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -24,11 +23,10 @@ import java.util.logging.Logger;
  */
 public class ProductListService {
     private final DBConnector db;
-    private final List<Product> productList;
+    //private final List<Product> productList;
 
     public ProductListService() {
         db = DBConnector.getInstance();
-        productList = new ArrayList<>();
     }
     
     /**
@@ -38,29 +36,12 @@ public class ProductListService {
     public List<Product> createAllProductList() {
         ResultSet rs = null;
         try {
-            String name, EAN;
-            int quantity;
-            
             rs = db.getAllBoughtProducts();
-            
-            rs.next();
-            while(!rs.isAfterLast()) {
-                name = rs.getString(2);
-                EAN = rs.getString(3);
-                quantity = rs.getInt(4);
-                productList.add(new Product(name, EAN, quantity));
-                rs.next();
-            }
+            return fillProductList(rs);
         } catch (SQLException ex) {
             Logger.getLogger(ProductListService.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                rs.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(ProductListService.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
-        return productList;
+        return null;
     }
 
     public List<Product> createProductList(String fromDateString, String toDateString, String customers) {
@@ -70,25 +51,30 @@ public class ProductListService {
         try {
             Date fromDate = sdf.parse(fromDateString);
             Date toDate = sdf.parse(toDateString);
-            String name, EAN;
-            int quantity;
-            rs = db.getBoughtProducts(fromDate, toDate, customers.substring(1, customers.length()-1));
-            rs.next();
-            while (!rs.isAfterLast()) {
-                name = rs.getString(1);
-                EAN = rs.getString(2);
-                quantity = rs.getInt(3);
-                productList.add(new Product(name, EAN, quantity));
-                rs.next();
-            }
-
+            if (customers.equals("null")) customers = "SELECT idKlient FROM eagleeye.Klient";
+            else customers = customers.substring(1, customers.length() - 1);
+            rs = db.getBoughtProducts(fromDate, toDate, customers);
+            return fillProductList(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    private List<Product> fillProductList(ResultSet rs) throws SQLException {
+        List<Product> productList = new ArrayList<>();
+        rs.next();
+        while (!rs.isAfterLast()) {
+            String name = rs.getString(1);
+            String EAN = rs.getString(2);
+            int quantity = rs.getInt(3);
+            productList.add(new Product(name, EAN, quantity));
+            rs.next();
+        }
+        rs.close();
         return productList;
     }
-    
-    
+
 }

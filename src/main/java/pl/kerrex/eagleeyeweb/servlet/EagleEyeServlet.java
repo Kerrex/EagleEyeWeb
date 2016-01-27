@@ -6,9 +6,9 @@
 package pl.kerrex.eagleeyeweb.servlet;
 
 import pl.kerrex.eagleeyeweb.database.CustomerListService;
+import pl.kerrex.eagleeyeweb.database.ProductListService;
 import pl.kerrex.eagleeyeweb.logic.Customer;
 import pl.kerrex.eagleeyeweb.logic.Product;
-import pl.kerrex.eagleeyeweb.database.ProductListService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,10 +34,13 @@ public class EagleEyeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ProductListService listService = new ProductListService();
-
-        //Deklaracje zmiennych
-        String currentDate = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
-        String nextJSP = "/jsp/eagleeye.jsp";
+        if (req.getParameter("action") != null) {
+            if (req.getParameter("action").equals("search"))
+                search(req, resp);
+        } else {
+            //Deklaracje zmiennych
+            String currentDate = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
+            String nextJSP = "/jsp/eagleeye.jsp";
 
         /*
         startDate - data "od" na pasku daty
@@ -45,20 +48,19 @@ public class EagleEyeServlet extends HttpServlet {
         productList - lista produktów załadowana przez ProductListService
         customerList - lista wszystkich klientów (stąd zmienna globalna)
          */
-        req.setAttribute("startDate", currentDate);
-        req.setAttribute("endDate", currentDate);
-        req.setAttribute("productList", listService.createAllProductList());
-        req.setAttribute("customerList", customers);
-        getServletContext().getRequestDispatcher(nextJSP).forward(req, resp);
+            req.setAttribute("startDate", currentDate);
+            req.setAttribute("endDate", currentDate);
+            req.setAttribute("productList", listService.createAllProductList());
+            req.setAttribute("customerList", customers);
+            getServletContext().getRequestDispatcher(nextJSP).forward(req, resp);
 
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("Got POST request: " + req.getParameter("action") + " " + Arrays.toString(req.getParameterValues("customers")));
-        if (req.getParameter("action").equals("search")) {
-            search(req, resp);
-        }
+        //System.out.println("Got POST request: " + req.getParameter("action") + " " + Arrays.toString(req.getParameterValues("customers")));
+
     }
 
     private void search(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -92,6 +94,6 @@ public class EagleEyeServlet extends HttpServlet {
         req.setAttribute("productList", productList);
         req.setAttribute("selectedCustomers", selectedCustomers);
         getServletContext().getRequestDispatcher(nextJSP).forward(req, resp);
-        System.out.println("Post dispatched");
+        System.out.println(req.getHeader("Referer"));
     }
 }
