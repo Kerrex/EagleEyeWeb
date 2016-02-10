@@ -30,7 +30,8 @@ public class DBConnector {
     }
 
     public static synchronized DBConnector getInstance() {
-        if (instance == null) {
+
+        if (instance == null || instance.isClosed()) {
             instance = new DBConnector();
         }
         return instance;
@@ -39,6 +40,15 @@ public class DBConnector {
     private void connect() throws SQLException {
         con = dataSource.getConnection();
         st = con.createStatement();
+    }
+
+    public boolean isClosed() {
+        try {
+            return con.isClosed();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public ResultSet getCustomers() throws SQLException {
