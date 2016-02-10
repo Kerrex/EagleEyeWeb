@@ -13,6 +13,12 @@ public class Customer {
         this.name = name;
     }
 
+    public Customer(long id, String name, String REGON) {
+        this.name = name;
+        this.REGON = REGON;
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }

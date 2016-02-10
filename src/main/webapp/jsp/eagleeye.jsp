@@ -9,10 +9,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
-<link rel="stylesheet" href="css/bootstrap.min.css">
-<link href="css/simple-sidebar.css" rel="stylesheet">
-<script src="js/jquery-1.12.0.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-datepicker.js"></script>
 <html>
 <head>
@@ -21,24 +17,7 @@
 </head>
 <body>
 <div id="wrapper">
-    <div id="sidebar-wrapper" style="max-width: 15%">
-        <ul class="sidebar-nav">
-            <li class="sidebar-brand">
-                <a href="#">
-                    EagleEye
-                </a>
-            </li>
-            <li>
-                <a href="#">Panel główny</a>
-            </li>
-            <li>
-                <a href="eagleeye">Sprzedaż</a>
-            </li>
-            <li>
-                <a href="#">Klienci</a>
-            </li>
-        </ul>
-    </div>
+    <jsp:include page="sidebar.html"/>
     <div id="page-content-wrapper" class="container">
         <form action="eagleeye" method="get">
             <div class="form-group jumbotron" style="float: right; padding-right: 10px; width: 15%">

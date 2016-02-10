@@ -26,10 +26,10 @@ import java.util.List;
  * @author tomek
  */
 @WebServlet(
-        name = "EagleEyeServlet",
+        name = "BoughtProductsServlet",
         urlPatterns = {"/eagleeye"}
 )
-public class EagleEyeServlet extends HttpServlet {
+public class BoughtProductsServlet extends HttpServlet {
     ArrayList<Customer> customers = (ArrayList<Customer>) new CustomerListService().createCustomerList();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -60,7 +60,7 @@ public class EagleEyeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //System.out.println("Got POST request: " + req.getParameter("action") + " " + Arrays.toString(req.getParameterValues("customers")));
-
+        //TODO Może jakaś edycja, nie mam pomysłu jeszcze
     }
 
     private void search(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

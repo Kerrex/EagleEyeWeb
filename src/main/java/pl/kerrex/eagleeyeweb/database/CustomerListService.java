@@ -22,14 +22,7 @@ public class CustomerListService {
         ArrayList<Customer> customers = null;
         try {
             rs = connector.getCustomers();
-            customers = new ArrayList<>();
-            rs.next();
-            while (!rs.isAfterLast()) {
-                String name = rs.getString("Nazwa_klienta");
-                long id = rs.getLong("idKlient");
-                customers.add(new Customer(id, name));
-                rs.next();
-            }
+            customers = (ArrayList<Customer>) parseCustomers(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -40,6 +33,55 @@ public class CustomerListService {
             }
         }
         System.out.println(customers);
+        return customers;
+    }
+
+    public List<Customer> createRegonCustomerList() {
+        ResultSet rs = null;
+        ArrayList<Customer> customers = null;
+        try {
+            rs = connector.getCustomersWithRegon();
+            customers = (ArrayList<Customer>) parseCustomersWithRegon(rs);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return customers;
+    }
+
+    public List<Customer> findCustomers(String cname, String cregon) {
+        ResultSet rs = null;
+        ArrayList<Customer> customers = null;
+        try {
+            rs = connector.findCustomers(cname, cregon);
+            customers = (ArrayList<Customer>) parseCustomersWithRegon(rs);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return customers;
+    }
+
+    private List<Customer> parseCustomersWithRegon(ResultSet rs) throws SQLException {
+        rs.next();
+        ArrayList<Customer> customers = new ArrayList<>();
+        while (!rs.isAfterLast()) {
+            String name = rs.getString("Nazwa_klienta");
+            long id = rs.getLong("idKlient");
+            String REGON = rs.getString("REGON");
+            customers.add(new Customer(id, name, REGON));
+            rs.next();
+        }
+        return customers;
+    }
+
+    private List<Customer> parseCustomers(ResultSet rs) throws SQLException {
+        rs.next();
+        ArrayList<Customer> customers = new ArrayList<>();
+        while (!rs.isAfterLast()) {
+            String name = rs.getString("Nazwa_klienta");
+            long id = rs.getLong("idKlient");
+            customers.add(new Customer(id, name));
+            rs.next();
+        }
         return customers;
     }
 }

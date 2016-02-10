@@ -56,6 +56,33 @@ public class DBConnector {
                 ("SELECT idKlient, Nazwa_klienta FROM eagleeye.Klient ORDER BY idKlient ASC;");
     }
 
+    public ResultSet getCustomersWithRegon() throws SQLException {
+        return st.executeQuery
+                ("SELECT idKlient, Nazwa_klienta, REGON FROM eagleeye.Klient ORDER BY idKlient ASC;");
+    }
+
+    public ResultSet findCustomers(String cname, String cregon) throws SQLException {
+
+        PreparedStatement ps;
+        if (cname.equals("")) {
+            ps = con.prepareStatement
+                    ("SELECT idKlient, Nazwa_klienta, REGON FROM eagleeye.Klient " +
+                            "WHERE UPPER(REGON) LIKE ? ORDER BY idKlient ASC");
+            ps.setString(1, "%" + cregon.toUpperCase() + "%");
+        } else if (cregon.equals("")) {
+            ps = con.prepareStatement
+                    ("SELECT idKlient, Nazwa_klienta, REGON FROM eagleeye.Klient " +
+                            "WHERE UPPER(Nazwa_klienta) LIKE ? ORDER BY idKlient ASC");
+            ps.setString(1, "%" + cname.toUpperCase() + "%");
+        } else {
+            ps = con.prepareStatement("SELECT idKlient, Nazwa_klienta, REGON FROM eagleeye.Klient " +
+                    "WHERE UPPER(REGON) LIKE ? AND UPPER(Nazwa_klienta) LIKE ? ORDER BY idKlient ASC");
+            ps.setString(1, "%" + cregon.toUpperCase() + "%");
+            ps.setString(2, "%" + cname.toUpperCase() + "%");
+        }
+
+        return ps.executeQuery();
+    }
     public int getCustomersSetLength() throws SQLException {
         int length;
         ResultSet rs = st.executeQuery("SELECT Count(*) FROM eagleeye.Klient;");
@@ -161,6 +188,8 @@ public class DBConnector {
         }
 
     }
+
+
     /*public ResultSet getProductsxcept(String[] eans) throws SQLException {
         StringBuilder NOTIN = new StringBuilder("EAN NOT IN (");
         for(int i = 0 ; i < eans.length ; i++) {
