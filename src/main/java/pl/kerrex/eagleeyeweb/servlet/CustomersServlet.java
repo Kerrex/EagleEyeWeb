@@ -23,7 +23,19 @@ public class CustomersServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        String action = req.getParameter("action");
+        if (action.equals("addcustomer")) {
+            String name = req.getParameter("name");
+            String REGON = req.getParameter("regon");
+            boolean isSuccessful = customerListService.insertCustomer(name, REGON);
+
+            if (isSuccessful)
+                req.setAttribute("state", "success");
+            else
+                req.setAttribute("state", "failed");
+
+            forwardToAddCustomer(req, resp);
+        }
     }
 
     @Override
@@ -34,10 +46,16 @@ public class CustomersServlet extends HttpServlet {
             //Po prostu pokazuję całą listę jeśli nie ma żadnych parametrów
             List<Customer> customerList = customerListService.createRegonCustomerList();
             req.setAttribute("customerList", customerList);
-            getServletContext().getRequestDispatcher("/jsp/customers.jsp").forward(req, resp);
+            getServletContext().getRequestDispatcher("/jsp/Klienci/customers.jsp").forward(req, resp);
         } else if (action.equals("search")) {
             search(req, resp);
+        } else if (action.equals("addcustomer")) {
+            forwardToAddCustomer(req, resp);
         }
+    }
+
+    private void forwardToAddCustomer(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        getServletContext().getRequestDispatcher("/jsp/Klienci/addcustomer.jsp").forward(req, resp);
     }
 
     private void search(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -46,6 +64,6 @@ public class CustomersServlet extends HttpServlet {
         System.out.println("Looking for customer with name " + name + " and REGON " + regon);
         List<Customer> customerList = customerListService.findCustomers(name, regon);
         req.setAttribute("customerList", customerList);
-        getServletContext().getRequestDispatcher("/jsp/customers.jsp").forward(req, resp);
+        getServletContext().getRequestDispatcher("/jsp/Klienci/customers.jsp").forward(req, resp);
     }
 }

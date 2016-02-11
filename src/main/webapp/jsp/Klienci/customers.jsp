@@ -9,10 +9,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
-<link rel="stylesheet" href="css/bootstrap.min.css">
-<link href="css/simple-sidebar.css" rel="stylesheet">
-<script src="js/jquery-1.12.0.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -20,7 +16,7 @@
 </head>
 <body>
 <div id="wrapper">
-    <jsp:include page="sidebar.html"/>
+    <jsp:include page="../sidebar.html"/>
     <div id="page-content-wrapper" class="container">
         <c:choose>
             <c:when test="${not empty customerList}">

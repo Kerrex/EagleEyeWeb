@@ -84,4 +84,16 @@ public class CustomerListService {
         }
         return customers;
     }
+
+    public boolean insertCustomer(String name, String REGON) {
+        boolean isSuccessful;
+        try {
+            connector.insertCustomer(name, REGON);
+            isSuccessful = true;
+        } catch (SQLException e) {
+            isSuccessful = false;
+            e.printStackTrace();
+        }
+        return isSuccessful;
+    }
 }

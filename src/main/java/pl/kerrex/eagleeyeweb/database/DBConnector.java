@@ -3,7 +3,6 @@ package pl.kerrex.eagleeyeweb.database;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
-import javax.swing.*;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 
@@ -176,17 +175,11 @@ public class DBConnector {
         return length;
     }
 
-    public void insertCustomer(String name, String REGON) {
-        try {
+    public void insertCustomer(String name, String REGON) throws SQLException {
             PreparedStatement ps = con.prepareStatement("INSERT INTO eagleeye.Klient (Nazwa_klienta, REGON) VALUES (?, ?)");
             ps.setString(1, name);
             ps.setString(2, REGON);
             ps.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Podany klient już istnieje!");
-        }
-
     }
 
 
