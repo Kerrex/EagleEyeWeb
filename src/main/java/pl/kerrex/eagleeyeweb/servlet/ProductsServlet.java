@@ -27,8 +27,19 @@ public class ProductsServlet extends HttpServlet {
             showProductList(req, resp);
         } else if (action.equals("addproduct")) {
             forwardToAddProduct(req, resp);
+        } else if (action.equals("erase")) {
+            eraseProduct(req, resp);
+        } else if (action.equals("edit")) {
+            //editProduct(req, resp);
         }
 
+    }
+
+    private void eraseProduct(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ProductListService productListService = new ProductListService();
+        String ean = req.getParameter("ean");
+        productListService.deleteProduct(ean);
+        showProductList(req, resp);
     }
 
     @Override

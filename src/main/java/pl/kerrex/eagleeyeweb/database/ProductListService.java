@@ -49,4 +49,12 @@ public class ProductListService {
             return false;
         }
     }
+
+    public void deleteProduct(String ean) {
+        try {
+            connector.removeProduct(ean);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

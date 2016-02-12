@@ -209,6 +209,12 @@ public class DBConnector {
         ps.execute();
     }
 
+    public void removeProduct(String ean) throws SQLException {
+        PreparedStatement ps = con.prepareStatement("DELETE FROM eagleeye.Produkt WHERE EAN = ?");
+        ps.setString(1, ean);
+        ps.execute();
+    }
+
 
     /*public ResultSet getProductsxcept(String[] eans) throws SQLException {
         StringBuilder NOTIN = new StringBuilder("EAN NOT IN (");
