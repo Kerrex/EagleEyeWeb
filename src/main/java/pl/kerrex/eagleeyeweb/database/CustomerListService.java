@@ -44,6 +44,13 @@ public class CustomerListService {
             customers = (ArrayList<Customer>) parseCustomersWithRegon(rs);
         } catch (SQLException e) {
             e.printStackTrace();
+            e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return customers;
     }
@@ -56,6 +63,12 @@ public class CustomerListService {
             customers = (ArrayList<Customer>) parseCustomersWithRegon(rs);
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return customers;
     }
@@ -95,5 +108,45 @@ public class CustomerListService {
             e.printStackTrace();
         }
         return isSuccessful;
+    }
+
+    public void removeCustomer(long id) {
+        try {
+            connector.removeCustomer(id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Customer getCustomerById(long id) {
+        ResultSet rs = null;
+        try {
+            rs = connector.getCustomerById(id);
+            rs.next();
+            long idCustomer = rs.getLong(1);
+            String name = rs.getString(2);
+            String REGON = rs.getString(3);
+            return new Customer(idCustomer, name, REGON);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public boolean updateCustomer(long id, String name, String regon) {
+        try {
+            connector.editCustomer(id, name, regon);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
     }
 }

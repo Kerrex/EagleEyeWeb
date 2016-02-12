@@ -7,9 +7,9 @@
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-
 <!DOCTYPE html>
 <html>
+<script src="js/jquery-1.12.0.min.js"></script>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>EagleEye Web</title>
@@ -20,6 +20,9 @@
     <div id="page-content-wrapper" class="container">
         <c:choose>
             <c:when test="${not empty customerList}">
+                <form id="customerForm" method="get" action="customers">
+                    <input type="hidden" name="idCustomer" id="idCustomer">
+                    <input type="hidden" name="action" id="action">
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -30,12 +33,17 @@
                     </thead>
                     <c:forEach var="customer" items="${customerList}">
                         <tr>
-                            <td>${customer.id}</td>
+                            <td><a href="#"><span onclick="edit('${customer.id}')">${customer.id}</span></a></td>
                             <td>${customer.name}</td>
                             <td>${customer.REGON}</td>
+                            <td><a href="#"><span onclick="erase('${customer.id}')"
+                                                  class="glyphicon glyphicon-trash"></span></a></td>
                         </tr>
                     </c:forEach>
                 </table>
+
+
+                </form>
             </c:when>
             <c:otherwise>
                 <div class="alert alert-info">
@@ -53,6 +61,17 @@
         </div>
     </div>
 </div>
-
 </body>
+<script>
+    function erase(id) {
+        document.getElementById("idCustomer").value = id;
+        document.getElementById("action").value = "erase";
+        document.getElementById("customerForm").submit();
+    }
+    function edit(id) {
+        document.getElementById("idCustomer").value = id;
+        document.getElementById("action").value = "edit";
+        document.getElementById("customerForm").submit();
+    }
+</script>
 </html>

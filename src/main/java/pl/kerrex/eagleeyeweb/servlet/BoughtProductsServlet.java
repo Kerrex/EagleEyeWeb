@@ -5,8 +5,8 @@
  */
 package pl.kerrex.eagleeyeweb.servlet;
 
+import pl.kerrex.eagleeyeweb.database.BoughtProductListService;
 import pl.kerrex.eagleeyeweb.database.CustomerListService;
-import pl.kerrex.eagleeyeweb.database.ProductListService;
 import pl.kerrex.eagleeyeweb.logic.Customer;
 import pl.kerrex.eagleeyeweb.logic.Product;
 
@@ -33,7 +33,7 @@ public class BoughtProductsServlet extends HttpServlet {
     ArrayList<Customer> customers = (ArrayList<Customer>) new CustomerListService().createCustomerList();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ProductListService listService = new ProductListService();
+        BoughtProductListService listService = new BoughtProductListService();
         if (req.getParameter("action") != null) {
             if (req.getParameter("action").equals("search"))
                 search(req, resp);
@@ -45,7 +45,7 @@ public class BoughtProductsServlet extends HttpServlet {
         /*
         startDate - data "od" na pasku daty
         endDate - data "do" na pasku daty
-        productList - lista produktów załadowana przez ProductListService
+        productList - lista produktów załadowana przez BoughtProductListService
         customerList - lista wszystkich klientów (stąd zmienna globalna)
          */
             req.setAttribute("startDate", currentDate);
@@ -64,7 +64,7 @@ public class BoughtProductsServlet extends HttpServlet {
     }
 
     private void search(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ProductListService listService = new ProductListService();
+        BoughtProductListService listService = new BoughtProductListService();
         //Print kontrolny
         System.out.println("Date: " + req.getParameter("dpstart") + " to " + req.getParameter("dpend"));
 

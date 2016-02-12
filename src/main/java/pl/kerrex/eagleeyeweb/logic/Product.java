@@ -20,6 +20,11 @@ public class Product {
         this.quantity = quantity;
     }
 
+    public Product(String name, String EAN) {
+        this.name = name;
+        this.EAN = EAN;
+    }
+
     public String getName() {
         return name;
     }
@@ -43,7 +48,5 @@ public class Product {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-    
-    
-    
+
 }

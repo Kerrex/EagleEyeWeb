@@ -182,6 +182,26 @@ public class DBConnector {
             ps.execute();
     }
 
+    public void removeCustomer(long id) throws SQLException {
+        PreparedStatement ps = con.prepareStatement("DELETE FROM eagleeye.Klient WHERE idKlient = ?");
+        ps.setLong(1, id);
+        ps.execute();
+    }
+
+    public ResultSet getCustomerById(long id) throws SQLException {
+        PreparedStatement ps = con.prepareStatement("SELECT idKlient, Nazwa_klienta, REGON FROM eagleeye.Klient WHERE idKlient = ?");
+        ps.setLong(1, id);
+        return ps.executeQuery();
+    }
+
+    public void editCustomer(long id, String name, String regon) throws SQLException {
+        PreparedStatement ps = con.prepareStatement("UPDATE eagleeye.Klient SET Nazwa_klienta = ?, REGON = ? WHERE idKlient = ?");
+        ps.setString(1, name);
+        ps.setString(2, regon);
+        ps.setLong(3, id);
+        ps.execute();
+    }
+
 
     /*public ResultSet getProductsxcept(String[] eans) throws SQLException {
         StringBuilder NOTIN = new StringBuilder("EAN NOT IN (");

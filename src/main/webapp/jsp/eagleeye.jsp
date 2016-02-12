@@ -9,6 +9,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
+<script src="js/jquery-1.12.0.min.js"></script>
 <script src="js/bootstrap-datepicker.js"></script>
 <html>
 <head>
