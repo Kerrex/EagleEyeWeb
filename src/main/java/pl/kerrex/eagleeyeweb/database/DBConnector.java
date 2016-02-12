@@ -202,6 +202,13 @@ public class DBConnector {
         ps.execute();
     }
 
+    public void insertProduct(String name, String ean) throws SQLException {
+        PreparedStatement ps = con.prepareStatement("INSERT INTO eagleeye.Produkt (Nazwa_produktu, EAN) VALUES (?, ?)");
+        ps.setString(1, name);
+        ps.setString(2, ean);
+        ps.execute();
+    }
+
 
     /*public ResultSet getProductsxcept(String[] eans) throws SQLException {
         StringBuilder NOTIN = new StringBuilder("EAN NOT IN (");

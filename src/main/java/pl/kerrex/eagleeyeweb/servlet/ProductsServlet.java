@@ -21,6 +21,44 @@ import java.util.List;
 public class ProductsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
+
+        if (action == null) {
+            showProductList(req, resp);
+        } else if (action.equals("addproduct")) {
+            forwardToAddProduct(req, resp);
+        }
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
+
+        if (action.equals("addproduct")) {
+            addProduct(req, resp);
+        }
+    }
+
+    private void addProduct(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ProductListService productListService = new ProductListService();
+        String name = req.getParameter("name");
+        String ean = req.getParameter("ean");
+        boolean isSuccessful = productListService.addProduct(name, ean);
+
+        if (isSuccessful)
+            req.setAttribute("state", "success");
+        else
+            req.setAttribute("state", "failed");
+
+        getServletContext().getRequestDispatcher("/jsp/Produkty/addproducts.jsp").forward(req, resp);
+    }
+
+    private void forwardToAddProduct(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        getServletContext().getRequestDispatcher("/jsp/Produkty/addproducts.jsp").forward(req, resp);
+    }
+
+    private void showProductList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ProductListService productListService = new ProductListService();
         List<Product> productList = productListService.createProductList();
         req.setAttribute("productList", productList);

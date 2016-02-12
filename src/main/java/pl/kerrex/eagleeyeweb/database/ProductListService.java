@@ -41,4 +41,12 @@ public class ProductListService {
         return products;
     }
 
+    public boolean addProduct(String name, String ean) {
+        try {
+            connector.insertProduct(name, ean);
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
 }

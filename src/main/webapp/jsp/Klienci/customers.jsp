@@ -23,24 +23,24 @@
                 <form id="customerForm" method="get" action="customers">
                     <input type="hidden" name="idCustomer" id="idCustomer">
                     <input type="hidden" name="action" id="action">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <td><h3>Id klienta</h3></td>
-                        <td><h3>Nazwa klienta</h3></td>
-                        <td><h3>REGON</h3></td>
-                    </tr>
-                    </thead>
-                    <c:forEach var="customer" items="${customerList}">
+                    <table class="table table-striped">
+                        <thead>
                         <tr>
-                            <td><a href="#"><span onclick="edit('${customer.id}')">${customer.id}</span></a></td>
-                            <td>${customer.name}</td>
-                            <td>${customer.REGON}</td>
-                            <td><a href="#"><span onclick="erase('${customer.id}')"
-                                                  class="glyphicon glyphicon-trash"></span></a></td>
+                            <td><h3>Id klienta</h3></td>
+                            <td><h3>Nazwa klienta</h3></td>
+                            <td><h3>REGON</h3></td>
                         </tr>
-                    </c:forEach>
-                </table>
+                        </thead>
+                        <c:forEach var="customer" items="${customerList}">
+                            <tr>
+                                <td><a href="#"><span onclick="edit('${customer.id}')">${customer.id}</span></a></td>
+                                <td>${customer.name}</td>
+                                <td>${customer.REGON}</td>
+                                <td><a href="#"><span onclick="erase('${customer.id}')"
+                                                      class="glyphicon glyphicon-trash"></span></a></td>
+                            </tr>
+                        </c:forEach>
+                    </table>
 
 
                 </form>
