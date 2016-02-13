@@ -57,4 +57,34 @@ public class ProductListService {
             e.printStackTrace();
         }
     }
+
+    public boolean updateProduct(String oldEan, String ean, String name) {
+        try {
+            connector.updateProduct(oldEan, ean, name);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public Product getProductByEan(String ean) {
+        ResultSet rs = null;
+        try {
+            rs = connector.getProductByEan(ean);
+            rs.next();
+            String name = rs.getString(1);
+            String EAN = rs.getString(2);
+            return new Product(name, EAN);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

@@ -87,7 +87,9 @@ public class CustomersServlet extends HttpServlet {
         String name = req.getParameter("name");
         String regon = req.getParameter("regon");
         System.out.println("Looking for customer with name " + name + " and REGON " + regon);
-        showCustomers(req, resp);
+        List<Customer> customerList = customerListService.findCustomers(name, regon);
+        req.setAttribute("customerList", customerList);
+        getServletContext().getRequestDispatcher("/jsp/Klienci/customers.jsp").forward(req, resp);
     }
 
     public void addCustomer(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {

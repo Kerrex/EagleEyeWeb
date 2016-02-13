@@ -215,6 +215,21 @@ public class DBConnector {
         ps.execute();
     }
 
+    public void updateProduct(String oldEan, String ean, String name) throws SQLException {
+        PreparedStatement ps = con.prepareStatement("UPDATE eagleeye.Produkt SET EAN = ? , Nazwa_produktu = ? WHERE EAN = ?");
+        //PreparedStatement ps2 = con.prepareStatement("UPDATE ")
+        ps.setString(1, ean);
+        ps.setString(2, name);
+        ps.setString(3, oldEan);
+        ps.execute();
+    }
+
+    public ResultSet getProductByEan(String ean) throws SQLException {
+        PreparedStatement ps = con.prepareStatement("SELECT Nazwa_produktu, EAN FROM eagleeye.Produkt WHERE EAN = ?");
+        ps.setString(1, ean);
+        return ps.executeQuery();
+    }
+
 
     /*public ResultSet getProductsxcept(String[] eans) throws SQLException {
         StringBuilder NOTIN = new StringBuilder("EAN NOT IN (");

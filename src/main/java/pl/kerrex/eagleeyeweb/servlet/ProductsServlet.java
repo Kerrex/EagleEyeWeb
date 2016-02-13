@@ -30,7 +30,31 @@ public class ProductsServlet extends HttpServlet {
         } else if (action.equals("erase")) {
             eraseProduct(req, resp);
         } else if (action.equals("edit")) {
-            //editProduct(req, resp);
+            forwardToEditProduct(req, resp);
+        }
+
+    }
+
+    private void forwardToEditProduct(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ProductListService productListService = new ProductListService();
+        String ean = req.getParameter("ean");
+        Product product = productListService.getProductByEan(ean);
+        req.setAttribute("product", product);
+        getServletContext().getRequestDispatcher("/jsp/Produkty/editproduct.jsp").forward(req, resp);
+    }
+
+    private void editProduct(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ProductListService productListService = new ProductListService();
+        String oldEan = req.getParameter("ean");
+        String ean = req.getParameter("newean");
+        String name = req.getParameter("name");
+        boolean isSuccessful = productListService.updateProduct(oldEan, ean, name);
+
+        if (isSuccessful)
+            showProductList(req, resp);
+        else {
+            req.setAttribute("state", "failed");
+            forwardToEditProduct(req, resp);
         }
 
     }
@@ -48,6 +72,8 @@ public class ProductsServlet extends HttpServlet {
 
         if (action.equals("addproduct")) {
             addProduct(req, resp);
+        } else if (action.equals("editproduct")) {
+            editProduct(req, resp);
         }
     }
 
