@@ -6,6 +6,7 @@
   Time: 18:09
   To change this template use File | Settings | File Templates.
 --%>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <script src="js/jquery-1.12.0.min.js"></script>
 <html>

@@ -75,4 +75,25 @@ public class BoughtProductListService {
         return productList;
     }
 
+    public int countProducts(Date start, Date end) {
+        ResultSet rs = null;
+        int count = 0;
+
+        try {
+            rs = db.getBoughtProductsCount(end, start);
+            rs.next();
+            count = rs.getInt(1);
+            System.out.println(count);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return count;
+    }
+
 }

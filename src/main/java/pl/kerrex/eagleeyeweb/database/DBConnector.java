@@ -230,6 +230,15 @@ public class DBConnector {
         return ps.executeQuery();
     }
 
+    public ResultSet getBoughtProductsCount(java.util.Date start, java.util.Date end) throws SQLException {
+        PreparedStatement ps = con.prepareStatement("SELECT SUM(Ilosc) FROM eagleeye.KlientProdukt WHERE Data BETWEEN ? AND ?");
+        ps.setDate(1, new Date(start.getTime()));
+        ps.setDate(2, new Date(end.getTime()));
+        System.out.println(ps.toString());
+        return ps.executeQuery();
+
+    }
+
 
     /*public ResultSet getProductsxcept(String[] eans) throws SQLException {
         StringBuilder NOTIN = new StringBuilder("EAN NOT IN (");

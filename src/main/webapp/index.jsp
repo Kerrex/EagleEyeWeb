@@ -13,6 +13,6 @@
     </head>
     <body>
         <h1>Hello World!</h1>
-        <jsp:forward page="/eagleeye"/>
+        <jsp:forward page="/dashboard"/>
     </body>
 </html>
