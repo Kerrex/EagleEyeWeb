@@ -1,4 +1,6 @@
 <link rel="stylesheet" href="css/bootstrap.min.css">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <link href="css/simple-sidebar.css" rel="stylesheet">
 <script src="js/bootstrap.min.js"></script>
 <div id="sidebar-wrapper" style="max-width: 15%">
@@ -36,5 +38,18 @@
                 </li>
             </ul>
         </li>
+        <li>
+            <form method="post" action="logout" id="logout-form">
+                <a href="#" onclick="submitLogout()">Wyloguj się</a>
+                <input type="hidden"
+                       name="${_csrf.parameterName}"
+                       value="${_csrf.token}"/>
+            </form>
+        </li>
     </ul>
 </div>
+<script>
+    function submitLogout() {
+        document.getElementById("logout-form").submit();
+    }
+</script>
