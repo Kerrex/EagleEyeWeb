@@ -38,6 +38,9 @@
                 <label for="ean">EAN:</label>
                 <input type="text" class="form-control" name="ean" id="ean" placeholder="Podaj EAN">
             </div>
+            <input type="hidden"
+                   name="${_csrf.parameterName}"
+                   value="${_csrf.token}"/>
             <button type="submit" class="btn btn-primary">Dodaj</button>
         </form>
     </div>

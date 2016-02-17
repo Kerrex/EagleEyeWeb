@@ -1,10 +1,9 @@
 package pl.kerrex.eagleeyeweb.database;
 
-import pl.kerrex.eagleeyeweb.logic.Customer;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import pl.kerrex.eagleeyeweb.database.beans.Customer;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +17,19 @@ public class CustomerListService {
     }
 
     public List<Customer> createCustomerList() {
-        ResultSet rs = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            List<Customer> customerList = session.createQuery("from Customer").list();
+            return customerList;
+        } catch (HibernateException e) {
+            e.printStackTrace();
+
+        } finally {
+            System.out.println("[DEBUG]: Customer list created");
+            session.close();
+        }
+        return null;
+        /*ResultSet rs = null;
         ArrayList<Customer> customers = null;
         try {
             rs = connector.getCustomers();
@@ -33,10 +44,10 @@ public class CustomerListService {
             }
         }
         System.out.println(customers);
-        return customers;
+        return customers;*/
     }
 
-    public List<Customer> createRegonCustomerList() {
+/*    public List<Customer> createRegonCustomerList() {
         ResultSet rs = null;
         ArrayList<Customer> customers = null;
         try {
@@ -53,10 +64,35 @@ public class CustomerListService {
             }
         }
         return customers;
-    }
+    }*/
 
     public List<Customer> findCustomers(String cname, String cregon) {
-        ResultSet rs = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<Customer> customerList = null;
+        try {
+            if (cname.equals("")) {
+                customerList = session.createQuery("FROM Customer WHERE REGON LIKE :regon")
+                        .setParameter("regon", "%" + cregon + "%")
+                        .list();
+            } else if (cregon.equals("")) {
+                customerList = session.createQuery("FROM Customer WHERE UPPER(name) LIKE UPPER(:name) ")
+                        .setParameter("name", "%" + cname + "%")
+                        .list();
+            } else {
+                customerList = session.createQuery("FROM Customer WHERE UPPER(name) LIKE UPPER(:name) AND REGON LIKE :regon")
+                        .setParameter("name", "%" + cname + "%")
+                        .setParameter("regon", "%" + cregon + "%")
+                        .list();
+            }
+            return customerList;
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+            System.out.println("[DEBUG]: Found customers with name " + cname + " and REGON " + cregon);
+        }
+        return null;
+        /*ResultSet rs = null;
         ArrayList<Customer> customers = null;
         try {
             rs = connector.findCustomers(cname, cregon);
@@ -70,10 +106,10 @@ public class CustomerListService {
                 e.printStackTrace();
             }
         }
-        return customers;
+        return customers;*/
     }
 
-    private List<Customer> parseCustomersWithRegon(ResultSet rs) throws SQLException {
+/*    private List<Customer> parseCustomersWithRegon(ResultSet rs) throws SQLException {
         rs.next();
         ArrayList<Customer> customers = new ArrayList<>();
         while (!rs.isAfterLast()) {
@@ -96,10 +132,27 @@ public class CustomerListService {
             rs.next();
         }
         return customers;
-    }
+    }*/
 
     public boolean insertCustomer(String name, String REGON) {
-        boolean isSuccessful;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        try {
+            Customer newCustomer = new Customer();
+            newCustomer.setName(name);
+            newCustomer.setREGON(REGON);
+            session.save(newCustomer);
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            session.getTransaction().rollback();
+            return false;
+        } finally {
+
+            session.close();
+            return true;
+        }
+        /*boolean isSuccessful;
         try {
             connector.insertCustomer(name, REGON);
             isSuccessful = true;
@@ -107,19 +160,42 @@ public class CustomerListService {
             isSuccessful = false;
             e.printStackTrace();
         }
-        return isSuccessful;
+        return isSuccessful;*/
     }
 
     public void removeCustomer(long id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
         try {
+            Customer oldCustomer = session.get(Customer.class, id);
+            session.delete(oldCustomer);
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            session.getTransaction().rollback();
+        } finally {
+
+            session.close();
+        }
+        /*try {
             connector.removeCustomer(id);
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public Customer getCustomerById(long id) {
-        ResultSet rs = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            Customer customer = session.get(Customer.class, id);
+            return customer;
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return null;
+        /*ResultSet rs = null;
         try {
             rs = connector.getCustomerById(id);
             rs.next();
@@ -136,17 +212,32 @@ public class CustomerListService {
                 e.printStackTrace();
             }
         }
-        return null;
+        return null;*/
     }
 
     public boolean updateCustomer(long id, String name, String regon) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
         try {
+            Customer customer = session.get(Customer.class, id);
+            customer.setName(name);
+            customer.setREGON(regon);
+            session.getTransaction().commit();
+            return true;
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            session.getTransaction().rollback();
+            return false;
+        } finally {
+            session.close();
+        }
+        /*try {
             connector.editCustomer(id, name, regon);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
-        }
+        }*/
 
     }
 }

@@ -7,7 +7,6 @@ package pl.kerrex.eagleeyeweb.servlet;
 
 import pl.kerrex.eagleeyeweb.database.BoughtProductListService;
 import pl.kerrex.eagleeyeweb.database.CustomerListService;
-import pl.kerrex.eagleeyeweb.logic.Customer;
 import pl.kerrex.eagleeyeweb.logic.Product;
 
 import javax.servlet.ServletException;
@@ -30,7 +29,7 @@ import java.util.List;
         urlPatterns = {"/eagleeye"}
 )
 public class BoughtProductsServlet extends HttpServlet {
-    ArrayList<Customer> customers = (ArrayList<Customer>) new CustomerListService().createCustomerList();
+    ArrayList<pl.kerrex.eagleeyeweb.database.beans.Customer> customers = (ArrayList<pl.kerrex.eagleeyeweb.database.beans.Customer>) new CustomerListService().createCustomerList();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         BoughtProductListService listService = new BoughtProductListService();

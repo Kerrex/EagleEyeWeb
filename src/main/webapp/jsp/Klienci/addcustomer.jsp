@@ -38,6 +38,9 @@
                 <label for="regon">REGON:</label>
                 <input type="text" class="form-control" name="regon" id="regon" placeholder="Podaj REGON">
             </div>
+            <input type="hidden"
+                   name="${_csrf.parameterName}"
+                   value="${_csrf.token}"/>
             <button type="submit" class="btn btn-primary">Dodaj</button>
         </form>
     </div>

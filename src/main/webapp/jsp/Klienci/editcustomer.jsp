@@ -36,6 +36,9 @@
                 <input type="text" class="form-control" name="regon" id="regon" value="${customer.REGON}"
                        placeholder="Podaj REGON">
             </div>
+            <input type="hidden"
+                   name="${_csrf.parameterName}"
+                   value="${_csrf.token}"/>
             <button type="submit" class="btn btn-primary">Edytuj</button>
         </form>
     </div>

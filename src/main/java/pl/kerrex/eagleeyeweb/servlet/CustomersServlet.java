@@ -1,7 +1,7 @@
 package pl.kerrex.eagleeyeweb.servlet;
 
 import pl.kerrex.eagleeyeweb.database.CustomerListService;
-import pl.kerrex.eagleeyeweb.logic.Customer;
+import pl.kerrex.eagleeyeweb.database.beans.Customer;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -106,7 +106,7 @@ public class CustomersServlet extends HttpServlet {
     }
 
     private void showCustomers(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Customer> customerList = customerListService.createRegonCustomerList();
+        List<Customer> customerList = customerListService.createCustomerList();
         req.setAttribute("customerList", customerList);
         getServletContext().getRequestDispatcher("/jsp/Klienci/customers.jsp").forward(req, resp);
     }
