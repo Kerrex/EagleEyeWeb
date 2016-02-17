@@ -16,7 +16,7 @@
 </head>
 <body>
 <div id="wrapper">
-    <jsp:include page="../sidebar.html"/>
+    <jsp:include page="../sidebar.jsp"/>
     <div id="page-content-wrapper" class="container">
         <c:if test="${state == 'failed'}">
             <div class="alert alert-danger">

@@ -15,20 +15,6 @@
     <link rel="stylesheet" href="css/form-elements.css">
     <link rel="stylesheet" href="css/style.css">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-    <!-- Favicon and touch icons -->
-    <link rel="shortcut icon" href="ico/favicon.png">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="ico/apple-touch-icon-57-precomposed.png">
-
 </head>
 
 <body>
@@ -70,10 +56,10 @@
                                 <input type="password" name="password" placeholder="Hasło"
                                        class="form-password form-control" id="form-password">
                             </div>
-                            <input type="hidden" 6
+                            <input type="hidden"
                                    name="${_csrf.parameterName}"
                                    value="${_csrf.token}"/>
-                            <button type="submit" class="btn">Sign in!</button>
+                            <button type="submit" class="btn">Zaloguj się</button>
                         </form>
                     </div>
                 </div>
@@ -87,12 +73,9 @@
 <!-- Javascript -->
 <script src="js/jquery-1.12.0.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
-<script src="js/jquery.backstretch.min.js"></script>
+
 <script src="js/scripts.js"></script>
 
-<!--[if lt IE 10]>
-<script src="js/placeholder.js"></script>
-<![endif]-->
 
 </body>
 

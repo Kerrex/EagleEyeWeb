@@ -16,7 +16,7 @@
 </head>
 <body>
 <div id="wrapper">
-    <jsp:include page="sidebar.html"/>
+    <jsp:include page="sidebar.jsp"/>
     <div id="page-content-wrapper" class="container">
         <div style="text-align: center" class="form-group jumbotron"><h3>W ciągu ostatnich 7 dni sprzedano:</h3><br>
             <h4>${lastWeek}</h4></div>

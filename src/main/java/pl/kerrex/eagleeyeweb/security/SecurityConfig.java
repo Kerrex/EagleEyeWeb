@@ -29,10 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/login")
                 .permitAll();
-
-        http.logout().logoutUrl("/logout")
-                .logoutSuccessUrl("/login")
-                .invalidateHttpSession(true);
+        //http.authorizeRequests().anyRequest().authenticated().and().formLogin().and().httpBasic();
 
     }
 
