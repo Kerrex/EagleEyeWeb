@@ -5,6 +5,9 @@
  */
 package pl.kerrex.eagleeyeweb.database;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import pl.kerrex.eagleeyeweb.database.beans.ProductCustomer;
 import pl.kerrex.eagleeyeweb.logic.Product;
 
 import java.sql.ResultSet;
@@ -12,10 +15,10 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * @author tomek
@@ -31,19 +34,58 @@ public class BoughtProductListService {
     /**
      * @return
      */
-    public List<Product> createAllProductList() {
-        ResultSet rs = null;
+    public List<ProductCustomer> createAllProductList() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            List<ProductCustomer> productCustomers = session.createQuery
+                    ("SELECT product.name, product.EAN, SUM (quantity) FROM ProductCustomer GROUP BY product.name, product.EAN").list();
+            return productCustomers;
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+            System.out.println("[DEBUG]; All products list created");
+        }
+        /*ResultSet rs = null;
         try {
             rs = db.getAllBoughtProducts();
             return fillProductList(rs);
         } catch (SQLException ex) {
             Logger.getLogger(BoughtProductListService.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return null;*/
         return null;
     }
 
-    public List<Product> createProductList(String fromDateString, String toDateString, String customers) {
-        ResultSet rs = null;
+    public List<ProductCustomer> createProductList(String fromDateString, String toDateString, String[] customers) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            List<ProductCustomer> productCustomers;
+            List<Long> parsedCustomers = Arrays.stream(customers).map(Long::parseLong).collect(Collectors.toList());
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            if (parsedCustomers.isEmpty()) {
+                productCustomers = session.createQuery("SELECT product.name, product.EAN, SUM (quantity) FROM ProductCustomer WHERE date BETWEEN :fromDate AND :toDate GROUP BY product.name, product.EAN ")
+                        .setParameter("fromDate", fromDateString)
+                        .setParameter("toDate", toDateString)
+                        .list();
+            } else {
+                productCustomers = session.createQuery("SELECT product.name, product.EAN, SUM (quantity) FROM ProductCustomer WHERE customer.id IN :customers AND date BETWEEN :fromDate AND :toDate GROUP BY product.name, product.EAN")
+                        .setParameterList("customers", parsedCustomers)
+                        .setParameter("fromDate", sdf.parse(fromDateString))
+                        .setParameter("toDate", sdf.parse(toDateString))
+                        .list();
+            }
+            return productCustomers;
+        } catch (HibernateException e) {
+            e.printStackTrace();
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+            System.out.println("[DEBUG]: Product list created");
+        }
+        /*ResultSet rs = null;
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
         try {
@@ -58,6 +100,7 @@ public class BoughtProductListService {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        return null;*/
         return null;
     }
 
@@ -76,7 +119,21 @@ public class BoughtProductListService {
     }
 
     public int countProducts(Date start, Date end) {
-        ResultSet rs = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            int count = ((Number) (session.createQuery("SELECT sum(quantity) FROM ProductCustomer WHERE date BETWEEN :endDate AND :startDate")
+                    .setParameter("endDate", end)
+                    .setParameter("startDate", start)
+                    .iterate().next())).intValue();
+            return count;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        } finally {
+            session.close();
+            System.out.println("[DEBUG]: Counted products");
+        }
+        /* ResultSet rs = null;
         int count = 0;
 
         try {
@@ -93,7 +150,7 @@ public class BoughtProductListService {
                 e.printStackTrace();
             }
         }
-        return count;
+        return count;*/
     }
 
 }

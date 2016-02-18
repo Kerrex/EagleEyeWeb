@@ -1,7 +1,7 @@
 package pl.kerrex.eagleeyeweb.servlet;
 
 import pl.kerrex.eagleeyeweb.database.ProductListService;
-import pl.kerrex.eagleeyeweb.logic.Product;
+import pl.kerrex.eagleeyeweb.database.beans.Product;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

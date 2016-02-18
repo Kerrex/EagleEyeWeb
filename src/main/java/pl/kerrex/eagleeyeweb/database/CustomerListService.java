@@ -10,11 +10,11 @@ import java.util.List;
  * Created by tomek on 25.01.16.
  */
 public class CustomerListService {
-    private DBConnector connector;
+/*    private DBConnector connector;
 
     public CustomerListService() {
         connector = DBConnector.getInstance();
-    }
+    }*/
 
     public List<Customer> createCustomerList() {
         Session session = HibernateUtil.getSessionFactory().openSession();

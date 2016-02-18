@@ -1,6 +1,7 @@
 package pl.kerrex.eagleeyeweb.database.beans;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by tomek on 17.02.16.
@@ -11,7 +12,7 @@ public class Customer {
     private long id;
     private String name;
     private String REGON;
-
+    private Set<ProductCustomer> productCustomers;
     public Customer() {
     }
 
@@ -48,5 +49,14 @@ public class Customer {
 
     public void setREGON(String REGON) {
         this.REGON = REGON;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+    public Set<ProductCustomer> getProductCustomers() {
+        return productCustomers;
+    }
+
+    public void setProductCustomers(Set<ProductCustomer> productCustomers) {
+        this.productCustomers = productCustomers;
     }
 }

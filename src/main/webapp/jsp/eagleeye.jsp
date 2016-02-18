@@ -45,9 +45,9 @@
                             </thead>
                             <c:forEach items="${productList}" var="product">
                                 <tr>
-                                    <td>${product.name}</td>
-                                    <td>${product.EAN}</td>
-                                    <td>${product.quantity}</td>
+                                    <td>${product[0]}</td>
+                                    <td>${product[1]}</td>
+                                    <td>${product[2]}</td>
                                 </tr>
                             </c:forEach>
                         </table>

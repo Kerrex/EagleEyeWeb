@@ -7,7 +7,7 @@ package pl.kerrex.eagleeyeweb.servlet;
 
 import pl.kerrex.eagleeyeweb.database.BoughtProductListService;
 import pl.kerrex.eagleeyeweb.database.CustomerListService;
-import pl.kerrex.eagleeyeweb.logic.Product;
+import pl.kerrex.eagleeyeweb.database.beans.ProductCustomer;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -77,8 +76,8 @@ public class BoughtProductsServlet extends HttpServlet {
         String nextJSP = "/jsp/eagleeye.jsp";
         String fromDate = req.getParameter("dpstart");
         String toDate = req.getParameter("dpend");
-        String selectedCustomers = Arrays.toString(req.getParameterValues("customers"));
-        List<Product> productList = listService.createProductList(fromDate, toDate, selectedCustomers);
+        String[] selectedCustomers = req.getParameterValues("customers");
+        List<ProductCustomer> productList = listService.createProductList(fromDate, toDate, selectedCustomers);
 
         /*
         startDate - data ustawiona na pasku, chodzi o to, aby została stara data sprzed zatwierdzenia
