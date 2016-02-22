@@ -8,13 +8,9 @@ package pl.kerrex.eagleeyeweb.database;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import pl.kerrex.eagleeyeweb.database.beans.ProductCustomer;
-import pl.kerrex.eagleeyeweb.logic.Product;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -24,12 +20,12 @@ import java.util.stream.Collectors;
  * @author tomek
  */
 public class BoughtProductListService {
-    private final DBConnector db;
+    //private final DBConnector db;
     //private final List<Product> productList;
 
-    public BoughtProductListService() {
-        db = DBConnector.getInstance();
-    }
+    //public BoughtProductListService() {
+    //    db = DBConnector.getInstance();
+    //}
 
     /**
      * @return
@@ -64,12 +60,14 @@ public class BoughtProductListService {
             List<Long> parsedCustomers = Arrays.stream(customers).map(Long::parseLong).collect(Collectors.toList());
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             if (parsedCustomers.isEmpty()) {
-                productCustomers = session.createQuery("SELECT product.name, product.EAN, SUM (quantity) FROM ProductCustomer WHERE date BETWEEN :fromDate AND :toDate GROUP BY product.name, product.EAN ")
+                productCustomers = session.createQuery("SELECT product.name, product.EAN, SUM (quantity) FROM ProductCustomer " +
+                        "WHERE date BETWEEN :fromDate AND :toDate GROUP BY product.name, product.EAN ")
                         .setParameter("fromDate", fromDateString)
                         .setParameter("toDate", toDateString)
                         .list();
             } else {
-                productCustomers = session.createQuery("SELECT product.name, product.EAN, SUM (quantity) FROM ProductCustomer WHERE customer.id IN :customers AND date BETWEEN :fromDate AND :toDate GROUP BY product.name, product.EAN")
+                productCustomers = session.createQuery("SELECT product.name, product.EAN, SUM (quantity) FROM ProductCustomer " +
+                        "WHERE customer.id IN :customers AND date BETWEEN :fromDate AND :toDate GROUP BY product.name, product.EAN")
                         .setParameterList("customers", parsedCustomers)
                         .setParameter("fromDate", sdf.parse(fromDateString))
                         .setParameter("toDate", sdf.parse(toDateString))
@@ -104,7 +102,7 @@ public class BoughtProductListService {
         return null;
     }
 
-    private List<Product> fillProductList(ResultSet rs) throws SQLException {
+/*    private List<Product> fillProductList(ResultSet rs) throws SQLException {
         List<Product> productList = new ArrayList<>();
         rs.next();
         while (!rs.isAfterLast()) {
@@ -116,7 +114,7 @@ public class BoughtProductListService {
         }
         rs.close();
         return productList;
-    }
+    }*/
 
     public int countProducts(Date start, Date end) {
         Session session = HibernateUtil.getSessionFactory().openSession();

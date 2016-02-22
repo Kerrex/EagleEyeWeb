@@ -13,5 +13,7 @@
         <mapping class="pl.kerrex.eagleeyeweb.database.beans.Customer"></mapping>
         <mapping class="pl.kerrex.eagleeyeweb.database.beans.Product"></mapping>
         <mapping class="pl.kerrex.eagleeyeweb.database.beans.ProductCustomer"></mapping>
+        <mapping class="pl.kerrex.eagleeyeweb.database.beans.User"></mapping>
+        <mapping class="pl.kerrex.eagleeyeweb.database.beans.UserRoles"></mapping>
     </session-factory>
 </hibernate-configuration>
